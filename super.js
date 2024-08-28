@@ -1,11 +1,16 @@
 const addBtn = document.getElementById('addBtn');
-const notes_El = document.querySelector('.notes');
-const edit_B = document.querySelector('.editbtn');
-const delete_B = document.querySelector('.deletebtn');
+// const notes_El = document.querySelector('.notes');
 
 
-const main = notes_El.querySelector('.main');
-const textArea = notes_El.querySelector('textarea');
+const notes = JSON.parse(localStorage.getItem('notes'));
+
+
+if (notes){
+    notes.forEach(note => {
+        addNewNote(note);
+    });
+}
+
 
 
 addBtn.addEventListener('click', () => {
@@ -13,25 +18,69 @@ addBtn.addEventListener('click', () => {
 })
 
 
-function addNewNote() {
+function addNewNote (text = '') {
     const note = document.createElement('div');
     note.classList.add('note');
 
-    
-}
+    note.innerHTML = `
+    <div class="notes">
+            <div class="tools">
+                <button class="edit"><i class="fas fa-edit"></i></button>
+                <button class="delete"><i class="fas fa-trash-alt"></i></button>
+            </div>
+            <div class="main ${text ? "" : "hidden"}"></div>
+            <textarea class="${text ? "hidden" : ""}"></textarea>
+        </div>
+    `
 
 
-
-edit_B.addEventListener('click', () => {
-    main.classList.toggle('hidden');
-    textArea.classList.toggle('hidden');
-})
+    const edit_B = note.querySelector('.edit');
+    const delete_B = note.querySelector('.delete');
 
 
-textArea.addEventListener('input', (e) => {
+    const main = note.querySelector('.main');
+    const textArea = note.querySelector('textarea');
 
-    const { value } = e.target;
 
-    main.innerHTML = marked(value);
+    textArea.value = text;
+    main.innerHTML = marked(text);
+
+    edit_B.addEventListener('click', () => {
+        main.classList.toggle('hidden');
+        textArea.classList.toggle('hidden');
+    })
+
+    delete_B.addEventListener('click', () => {
+        note.remove();
+    });
+
+    textArea.addEventListener('input', (e) => {
+
+        const { value } = e.target;
+
+        main.innerHTML = marked(value);
+
+        updateLS();
+
 
 });
+
+
+    document.body.appendChild(note);
+};
+
+
+    function updateLS () {
+   
+        const notesText = document.querySelectorAll('textarea');
+    
+    
+        const notes = [];
+    
+        notesText.forEach(note => {
+            notes.push(note.value);      
+        });
+        
+        localStorage.setItem('notes', JSON.stringify(notes));
+    
+    }
