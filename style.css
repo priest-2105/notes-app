@@ -14,3 +14,33 @@ body{
 
 
 
+.notes .tools{
+    background-color: #9ec862;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem;
+}
+
+
+.notes .tools button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+
+}
+
+.notes .main {
+    height: 100%;
+    width: 100%;
+}
+
+
+.notes textarea {
+    border: none;
+    height: 100%;
+    width: 100%;
+    font-family: inherit;
+}
+
